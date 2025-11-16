@@ -42,8 +42,6 @@ html,
 body {
    margin: 0;
    padding: 0;
-   height: 100%;
-   overflow: hidden;
 }
 
 body {
@@ -52,6 +50,12 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
+}
+
+/* For app-like pages (API reference, designer, inspector) that need fixed height */
+body.app-layout {
+  height: 100vh;
+  overflow: hidden;
 }
 
 a {
@@ -1264,6 +1268,7 @@ footer a {
   .header-inner {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
   }
 
   .nav-links {
@@ -1301,6 +1306,19 @@ footer a {
   .filters-row {
     justify-content: flex-start;
   }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .stats-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mods-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1314,13 +1332,63 @@ footer a {
     height: calc(100vh - 150px);
   }
 
+  body.app-layout main {
+    height: calc(100vh - 120px);
+  }
+
   #sidebar {
     display: none;
+  }
+
+  #content-panel {
+    padding: 1rem;
   }
 
   .split-layout {
     flex-direction: column;
     height: auto;
     padding: 1rem;
+  }
+
+  .function-card {
+    padding: 0.75rem;
+  }
+
+  .brand-text-main {
+    font-size: 0.95rem;
+  }
+
+  .brand-text-sub {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 0.75rem;
+  }
+
+  .nav-pill {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .panel-metrics {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
