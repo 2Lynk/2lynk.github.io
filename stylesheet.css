@@ -1,1 +1,881 @@
-1
+/* ============================================================================
+   2Lynk Global Stylesheet
+   - Dark + light theme
+   - Used by: root landing, ThreadJS docs, inspector, designer, example-mods
+   - Theme: set on <html data-theme="dark"> or <html data-theme="light">
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Base design tokens (dark is default)
+   ------------------------------------------------------------------------ */
+
+:root {
+  /* Layout */
+  --page-max-width: 1120px;
+  --radius-lg: 18px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --radius-pill: 999px;
+
+  --transition-fast: 0.18s ease-out;
+  --transition-med: 0.22s ease-out;
+
+  /* Dark theme defaults (overridden in [data-theme="light"]) */
+  --bg-primary: #0b0c10;
+  --bg-elevated: #111319;
+  --bg-elevated-soft: #151824;
+  --bg-elevated-subtle: #181a24;
+
+  --accent: #45a29e;
+  --accent-strong: #66fcf1;
+  --accent-soft: rgba(69, 162, 158, 0.18);
+  --accent-gradient: linear-gradient(135deg, #45a29e, #66fcf1);
+
+  --text-primary: #f8f9fa;
+  --text-secondary: #c5c6c7;
+  --text-muted: #9ea0a4;
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --shadow-card: 0 26px 60px rgba(0, 0, 0, 0.7);
+
+  /* Code / docs */
+  --code-bg: #111319;
+  --code-border: rgba(255, 255, 255, 0.12);
+  --code-text: #f8f9fa;
+
+  --badge-bg: rgba(10, 12, 18, 0.95);
+  --input-bg: #10121a;
+  --input-border: rgba(255, 255, 255, 0.16);
+  --input-text: #f8f9fa;
+}
+
+/* Light theme overrides */
+html[data-theme="light"] {
+  --bg-primary: #f7f7fb;
+  --bg-elevated: #ffffff;
+  --bg-elevated-soft: #f0f2f6;
+  --bg-elevated-subtle: #eceff4;
+
+  --accent: #1d7a74;
+  --accent-strong: #0eb0a3;
+  --accent-soft: rgba(14, 176, 163, 0.12);
+  --accent-gradient: linear-gradient(135deg, #0eb0a3, #1d7a74);
+
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+
+  --border-subtle: rgba(15, 23, 42, 0.05);
+  --border-soft: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.18);
+
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.18);
+  --shadow-card: 0 18px 40px rgba(15, 23, 42, 0.26);
+
+  --code-bg: #111827;
+  --code-border: rgba(15, 23, 42, 0.4);
+  --code-text: #e5e7eb;
+
+  --badge-bg: #e5e7eb;
+  --input-bg: #ffffff;
+  --input-border: rgba(15, 23, 42, 0.16);
+  --input-text: #111827;
+}
+
+/* --------------------------------------------------------------------------
+   Global reset + base
+   ------------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, #1f2833 0, transparent 55%),
+    radial-gradient(circle at bottom right, #1f2833 0, transparent 55%),
+    var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* For light theme, tone down background texture a bit */
+html[data-theme="light"] body {
+  background:
+    radial-gradient(circle at top left, #dbeafe 0, transparent 55%),
+    radial-gradient(circle at bottom right, #e5e7eb 0, transparent 55%),
+    var(--bg-primary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+code,
+kbd,
+samp {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+}
+
+/* Simple utility classes */
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.badge {
+  padding: 0.18rem 0.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-soft);
+  background: var(--badge-bg);
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Standard container for pages using the 1120px width */
+
+.page-shell {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+/* --------------------------------------------------------------------------
+   Shared header / nav (used on landing + docs pages)
+   ------------------------------------------------------------------------ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(18px);
+  background: linear-gradient(
+      to bottom,
+      rgba(11, 12, 16, 0.96),
+      rgba(11, 12, 16, 0.92),
+      transparent
+    );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="light"] .site-header {
+  background: linear-gradient(
+      to bottom,
+      rgba(249, 250, 251, 0.98),
+      rgba(249, 250, 251, 0.96),
+      transparent
+    );
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.site-header-inner {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Brand */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 14px;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0, #45a29e 20%, #0b0c10 70%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 12px 24px rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--bg-primary);
+  font-weight: 700;
+}
+
+html[data-theme="light"] .brand-mark {
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.05),
+    0 10px 22px rgba(15, 23, 42, 0.25);
+}
+
+.brand-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.brand-text-main {
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.brand-text-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  opacity: 0.85;
+}
+
+/* Nav pills */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-pill {
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(15, 17, 25, 0.92);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: background var(--transition-fast), border-color var(--transition-fast),
+    transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+html[data-theme="light"] .nav-pill {
+  background: rgba(249, 250, 251, 0.94);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.nav-pill span.emoji {
+  font-size: 1rem;
+}
+
+.nav-pill:hover {
+  background: rgba(26, 30, 44, 0.98);
+  border-color: rgba(102, 252, 241, 0.65);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="light"] .nav-pill:hover {
+  background: rgba(239, 246, 255, 0.98);
+  border-color: rgba(14, 176, 163, 0.6);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.25);
+}
+
+.nav-pill--accent {
+  position: relative;
+  background: var(--accent-gradient);
+  color: #030608;
+  border-color: transparent;
+  font-weight: 600;
+  padding-right: 1rem;
+}
+
+.nav-pill--accent::after {
+  content: "↗";
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.nav-pill--accent:hover {
+  transform: translateY(-1px) translateX(0);
+  box-shadow: 0 18px 45px rgba(69, 162, 158, 0.55);
+  filter: saturate(1.15);
+}
+
+/* When used for docs navigation (ThreadJS pages) */
+.nav-pill--doc {
+  background: rgba(12, 14, 20, 0.9);
+  box-shadow: none;
+}
+html[data-theme="light"] .nav-pill--doc {
+  background: rgba(243, 244, 246, 0.96);
+}
+
+/* --------------------------------------------------------------------------
+   Landing page layout classes
+   (used by 2lynk.github.io root index.html)
+   ------------------------------------------------------------------------ */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+  gap: 1.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.7rem 0.25rem 0.4rem;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(circle at 0% 50%, rgba(102, 252, 241, 0.25), transparent 60%),
+    rgba(15, 18, 25, 0.9);
+  border: 1px solid rgba(102, 252, 241, 0.4);
+  font-size: 0.78rem;
+  color: var(--accent-strong);
+  width: fit-content;
+}
+
+html[data-theme="light"] .hero-kicker {
+  background: radial-gradient(circle at 0% 50%, rgba(14, 176, 163, 0.18), transparent 60%),
+    rgba(248, 250, 252, 0.96);
+  border-color: rgba(14, 176, 163, 0.55);
+}
+
+.hero-kicker-badge {
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-pill);
+  background: rgba(3, 6, 8, 0.9);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+html[data-theme="light"] .hero-kicker-badge {
+  background: rgba(15, 23, 42, 0.9);
+  color: #f9fafb;
+}
+
+.hero-title {
+  font-size: clamp(1.9rem, 3vw, 2.45rem);
+  font-weight: 720;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.hero-title span.highlight {
+  background: linear-gradient(135deg, #66fcf1, #45a29e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 37rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+}
+
+.hero-btn-primary {
+  padding: 0.55rem 1.3rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-gradient);
+  border: none;
+  color: #030608;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 18px 45px rgba(69, 162, 158, 0.5);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+    filter var(--transition-fast);
+}
+
+.hero-btn-primary span.icon {
+  font-size: 1rem;
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.1);
+  box-shadow: 0 22px 55px rgba(69, 162, 158, 0.7);
+}
+
+.hero-btn-ghost {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(10, 12, 18, 0.8);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: border-color var(--transition-fast),
+    background var(--transition-fast), color var(--transition-fast),
+    transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+html[data-theme="light"] .hero-btn-ghost {
+  background: rgba(243, 244, 246, 0.96);
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.hero-btn-ghost span.icon {
+  font-size: 1rem;
+}
+
+.hero-btn-ghost:hover {
+  border-color: rgba(102, 252, 241, 0.7);
+  color: var(--accent-strong);
+  background: rgba(18, 21, 30, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme="light"] .hero-btn-ghost:hover {
+  background: #ffffff;
+  border-color: rgba(14, 176, 163, 0.75);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.24);
+}
+
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.9rem;
+}
+
+.stat-pill {
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 16, 22, 0.9);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  backdrop-filter: blur(12px);
+}
+
+html[data-theme="light"] .stat-pill {
+  background: rgba(248, 250, 252, 0.96);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.stat-pill strong {
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero right panel (Modrinth stats) */
+
+.hero-right {
+  align-self: stretch;
+}
+
+.hero-panel {
+  height: 100%;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(circle at top left, rgba(102, 252, 241, 0.25), transparent 55%),
+    linear-gradient(150deg, rgba(21, 25, 37, 0.95), rgba(11, 13, 19, 0.98));
+  border: 1px solid rgba(102, 252, 241, 0.32);
+  box-shadow: var(--shadow-soft);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+html[data-theme="light"] .hero-panel {
+  background: radial-gradient(circle at top left, rgba(14, 176, 163, 0.22), transparent 55%),
+    linear-gradient(150deg, #f9fafb, #e5e7eb);
+  border-color: rgba(14, 176, 163, 0.4);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+}
+
+/* (… keep all your existing .panel-*, .metric, .mods-grid, .mod-card etc.
+   They are identical to what you pasted, only now they use theme vars.
+   To keep this message manageable we’ll assume you paste those unchanged.
+   If you want, I can collapse them into this sheet next step.) */
+
+/* --------------------------------------------------------------------------
+   ThreadJS docs layout (index.html, example-mods.html, designer.html, etc.)
+   ------------------------------------------------------------------------ */
+
+/* Overall shell for docs pages */
+
+.docs-shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 0;
+  min-height: calc(100vh - 64px);
+}
+
+/* Left sidebar */
+
+.docs-sidebar {
+  border-right: 1px solid var(--border-subtle);
+  padding-right: 1rem;
+  padding-top: 0.25rem;
+}
+
+.docs-sidebar-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.docs-tag-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.docs-tag-list li + li {
+  margin-top: 0.2rem;
+}
+
+.tag-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.28rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.tag-link:hover {
+  background: rgba(102, 252, 241, 0.08);
+  color: var(--accent-strong);
+  transform: translateX(1px);
+}
+
+.tag-link.active {
+  background: rgba(102, 252, 241, 0.16);
+  color: var(--accent-strong);
+}
+
+/* Right content panel */
+
+.docs-content-panel {
+  padding-left: 1.4rem;
+  overflow: auto;
+}
+
+.docs-intro {
+  margin-bottom: 1rem;
+  max-width: 720px;
+  color: var(--text-secondary);
+}
+
+.docs-intro h1 {
+  font-size: 1.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.tag-section {
+  margin-bottom: 2rem;
+}
+
+.tag-section > h2 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 1.25rem 0 0.6rem;
+}
+
+/* Function cards */
+
+.function-card {
+  border-radius: var(--radius-lg);
+  padding: 0.8rem 0.9rem;
+  background: radial-gradient(circle at 0 0, rgba(102, 252, 241, 0.16), transparent 55%),
+    var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 0.6rem;
+}
+
+html[data-theme="light"] .function-card {
+  background: radial-gradient(circle at 0 0, rgba(14, 176, 163, 0.16), transparent 55%),
+    var(--bg-elevated-soft);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+}
+
+.function-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+}
+
+.function-name {
+  font-weight: 600;
+  font-size: 0.96rem;
+}
+
+.function-tag-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.18rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-soft);
+  background: rgba(10, 12, 18, 0.95);
+  color: rgba(235, 248, 255, 0.92);
+}
+
+html[data-theme="light"] .function-tag-label {
+  background: rgba(249, 250, 251, 0.96);
+  color: #111827;
+}
+
+.function-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.2fr);
+  gap: 0.6rem;
+}
+
+@media (max-width: 880px) {
+  .docs-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .docs-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+  .docs-content-panel {
+    padding-left: 0;
+    padding-top: 0.75rem;
+  }
+  .function-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.func-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.func-description p:first-child {
+  margin-top: 0;
+}
+
+.func-description p {
+  margin: 0.25rem 0;
+}
+
+/* Examples block inside docs cards */
+
+.func-samples-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.sample-block {
+  margin-bottom: 0.35rem;
+}
+
+.sample-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.1rem;
+}
+
+/* Highlight our own code fences nicely */
+
+.sample-block pre,
+.docs-content-panel pre {
+  margin: 0;
+  padding: 0.55rem 0.6rem;
+  border-radius: 8px;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  color: var(--code-text);
+  font-size: 0.78rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Markdown headings inside descriptions */
+
+.docs-content-panel h3 {
+  font-size: 0.96rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+
+/* --------------------------------------------------------------------------
+   Simple footer
+   ------------------------------------------------------------------------ */
+
+.site-footer {
+  max-width: var(--page-max-width);
+  margin: 1.75rem auto 0;
+  padding: 0 1.25rem 2rem;
+  font-size: 0.78rem;
+  color: rgba(173, 181, 189, 0.8);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  opacity: 0.85;
+}
+
+.site-footer a {
+  color: rgba(102, 252, 241, 0.9);
+}
+
+html[data-theme="light"] .site-footer a {
+  color: #0eb0a3;
+}
+
+/* --------------------------------------------------------------------------
+   Forms / inputs shared across inspector & designer
+   ------------------------------------------------------------------------ */
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--input-text);
+  border-radius: 6px;
+  padding: 0.25rem 0.45rem;
+  font-family: inherit;
+  font-size: 0.86rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  background: rgba(14, 16, 24, 0.95);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast),
+    transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+html[data-theme="light"] button {
+  background: #f3f4f6;
+  border-color: rgba(148, 163, 184, 0.6);
+  color: #111827;
+}
+
+button:hover {
+  background: rgba(26, 30, 44, 0.98);
+  border-color: rgba(102, 252, 241, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="light"] button:hover {
+  background: #ffffff;
+  border-color: rgba(14, 176, 163, 0.75);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive tweaks shared
+   ------------------------------------------------------------------------ */
+
+@media (max-width: 780px) {
+  .site-header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .page-shell {
+    padding-inline: 1rem;
+  }
+
+  .site-footer {
+    padding-inline: 1rem;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 1.2rem;
+  }
+
+  .hero-panel {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .function-card {
+    padding: 0.75rem;
+  }
+}
