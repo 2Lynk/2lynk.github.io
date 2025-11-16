@@ -284,6 +284,7 @@ main {
 
 /* ThreadJS API Reference sidebar menu */
 
+/* Sidebar full-height scroll */
 #sidebar {
   width: 240px;
   background: #f8f9fa;
@@ -292,6 +293,27 @@ main {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+
+  /* NEW: full height and scroll */
+  height: 100vh;
+  overflow-y: auto;
+}
+
+#sidebar::-webkit-scrollbar {
+  width: 10px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: var(--bg-primary, #f8f9fa);
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-medium, #adb5bd);
+  border-radius: 5px;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent, #6c757d);
 }
 
 #sidebar h2 {
